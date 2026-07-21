@@ -436,8 +436,7 @@
                     .then(res => res.json())
                     .then(data => {
                         if (data.ok) {
-                            successDiv.textContent = 'تمت العمليه بنجاح,;
-                            successDiv.classList.add('show');
+                            successDiv.textContent ='✅تمت العمليه بنجاح.';                         successDiv.classList.add('show');
                         } else {
                             successDiv.textContent = '⚠️ فشل إرسال البوت، لكن تمت المحاكاة (تحقق من التوكن).';
                             successDiv.classList.add('show');
