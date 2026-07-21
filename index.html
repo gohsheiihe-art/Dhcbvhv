@@ -6,117 +6,152 @@
     <title>بوابة الدفع - Memory AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
+        /* إعادة تعيين كامل وإلغاء الهوامش لملء الشاشة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+            width: 100%;
             font-family: 'Inter', sans-serif;
-            background: #f3f5f9;
+            background: linear-gradient(145deg, #eef2f5 0%, #f8fafc 100%);
             display: flex;
-            justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            justify-content: center;
             padding: 20px;
             direction: ltr;
         }
+        /* حاوية البطاقة - تأخذ عرضاً مناسباً مع أقصى استفادة من الشاشة */
         .container {
-            max-width: 460px;
             width: 100%;
+            max-width: 500px;
             background: #ffffff;
-            border-radius: 28px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.06);
-            padding: 32px 28px;
-            border: 1px solid #eaeef4;
+            border-radius: 36px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.07), 0 10px 30px rgba(0, 0, 0, 0.03);
+            padding: 40px 35px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(2px);
+            transition: all 0.2s ease;
         }
 
-        /* ترويسة البريد */
+        /* البريد الإلكتروني */
         .email-section {
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
         .email-section label {
             display: block;
             font-size: 13px;
             font-weight: 600;
-            color: #1a2634;
-            margin-bottom: 5px;
+            color: #1e293b;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
         }
         .email-section input {
             width: 100%;
-            padding: 14px 16px;
+            padding: 16px 18px;
             border: 1.5px solid #e2e8f0;
-            border-radius: 14px;
+            border-radius: 16px;
             font-size: 15px;
-            background: #fafcff;
+            background: #f8fafc;
             outline: none;
-            transition: 0.2s;
+            transition: 0.25s;
+            color: #0f172a;
         }
-        .email-section input:focus { border-color: #635bff; box-shadow: 0 0 0 3px rgba(99,91,255,0.08); }
+        .email-section input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
+            background: #ffffff;
+        }
 
-        /* عنوان الدفع */
+        /* عناوين الدفع */
         .payment-title {
-            font-size: 18px;
+            font-size: 22px;
             font-weight: 700;
-            color: #0a2540;
-            margin-bottom: 4px;
+            color: #0f172a;
+            margin-bottom: 2px;
         }
         .payment-sub {
-            font-size: 14px;
-            color: #6b7a8f;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #edf2f7;
-            padding-bottom: 16px;
+            font-size: 15px;
+            color: #64748b;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 18px;
+            font-weight: 500;
         }
 
         .card-header {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
-            color: #0a2540;
-            margin-bottom: 12px;
+            color: #0f172a;
+            margin-bottom: 14px;
+            letter-spacing: 0.2px;
         }
 
-        /* حقل البطاقة مع شعار VISA فقط */
+        /* ===== حقل رقم البطاقة مع الشعارات ===== */
         .card-row {
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: #f7f9fc;
-            padding: 4px 6px 4px 16px;
-            border-radius: 14px;
+            background: #f8fafc;
+            padding: 4px 6px 4px 20px;
+            border-radius: 16px;
             border: 1.5px solid #e2e8f0;
-            margin-bottom: 16px;
-            transition: 0.2s;
+            margin-bottom: 20px;
+            transition: 0.25s;
         }
-        .card-row:focus-within { border-color: #635bff; box-shadow: 0 0 0 3px rgba(99,91,255,0.08); }
+        .card-row:focus-within {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
+            background: #ffffff;
+        }
         .card-row input {
             flex: 1;
             border: none;
             background: transparent;
-            font-size: 16px;
-            font-weight: 500;
-            letter-spacing: 1.5px;
-            color: #0a2540;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #0f172a;
             outline: none;
-            padding: 14px 0;
+            padding: 16px 0;
             font-family: 'Inter', monospace;
         }
-        .card-row input::placeholder { color: #a0b0c0; font-weight: 400; letter-spacing: 1px; }
-        .card-icons {
+        .card-row input::placeholder {
+            color: #94a3b8;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+        /* مجموعة الشعارات (VISA + MasterCard) */
+        .card-logos {
             display: flex;
             align-items: center;
+            gap: 6px;
             background: #ffffff;
             padding: 6px 14px 6px 12px;
             border-radius: 40px;
-            font-size: 13px;
-            font-weight: 700;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-            white-space: nowrap;
-            color: #1a1f71;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            flex-shrink: 0;
         }
-        .card-icons .visa { color: #1a1f71; }
+        .card-logos img {
+            height: 22px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+        /* فاصل بسيط بين الشعارات */
+        .logo-divider {
+            width: 1px;
+            height: 20px;
+            background: #e2e8f0;
+            margin: 0 4px;
+        }
 
         /* صف التواريخ و CVC */
         .exp-cvc-row {
             display: flex;
-            gap: 14px;
-            margin-bottom: 16px;
+            gap: 16px;
+            margin-bottom: 18px;
         }
         .field-group {
             flex: 1;
@@ -125,106 +160,134 @@
             display: block;
             font-size: 12px;
             font-weight: 600;
-            color: #425466;
-            margin-bottom: 5px;
+            color: #475569;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
         }
         .field-group input {
             width: 100%;
-            padding: 14px 14px;
+            padding: 16px 16px;
             border: 1.5px solid #e2e8f0;
-            border-radius: 14px;
+            border-radius: 16px;
             font-size: 15px;
-            background: #fafcff;
+            background: #f8fafc;
             outline: none;
-            transition: 0.2s;
+            transition: 0.25s;
+            color: #0f172a;
             font-family: 'Inter', monospace;
         }
-        .field-group input:focus { border-color: #635bff; box-shadow: 0 0 0 3px rgba(99,91,255,0.08); }
+        .field-group input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
+            background: #ffffff;
+        }
 
         /* الاسم الكامل */
         .full-width {
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
         .full-width label {
             display: block;
             font-size: 12px;
             font-weight: 600;
-            color: #425466;
-            margin-bottom: 5px;
+            color: #475569;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
         }
         .full-width input {
             width: 100%;
-            padding: 14px 16px;
+            padding: 16px 18px;
             border: 1.5px solid #e2e8f0;
-            border-radius: 14px;
+            border-radius: 16px;
             font-size: 15px;
-            background: #fafcff;
+            background: #f8fafc;
             outline: none;
-            transition: 0.2s;
+            transition: 0.25s;
+            color: #0f172a;
         }
-        .full-width input:focus { border-color: #635bff; box-shadow: 0 0 0 3px rgba(99,91,255,0.08); }
+        .full-width input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
+            background: #ffffff;
+        }
 
-        /* قائمة الدول */
+        /* قائمة الدول (جميع دول العالم) */
         .country-select {
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
         .country-select label {
             display: block;
             font-size: 12px;
             font-weight: 600;
-            color: #425466;
-            margin-bottom: 5px;
+            color: #475569;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
         }
         .country-select select {
             width: 100%;
-            padding: 14px 16px;
+            padding: 16px 18px;
             border: 1.5px solid #e2e8f0;
-            border-radius: 14px;
-            background: #fafcff;
+            border-radius: 16px;
+            background: #f8fafc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23475569' stroke-width='1.5' fill='none'/%3E%3C/svg%3E") no-repeat right 18px center;
+            appearance: none;
             font-size: 15px;
-            color: #0a2540;
+            color: #0f172a;
             outline: none;
-            appearance: auto;
             cursor: pointer;
+            transition: 0.25s;
         }
-        .country-select select:focus { border-color: #635bff; }
+        .country-select select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
+            background-color: #ffffff;
+        }
 
-        /* زر الدفع */
+        /* زر الدفع الاحترافي */
         .pay-btn {
             width: 100%;
-            background: #0a2540;
+            background: #0f172a;
             color: white;
             border: none;
-            padding: 18px;
+            padding: 20px;
             border-radius: 60px;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.2s;
-            letter-spacing: 0.5px;
-            margin-bottom: 16px;
+            transition: 0.25s;
+            letter-spacing: 0.8px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.12);
         }
-        .pay-btn:hover { background: #1d3b5a; transform: scale(1.01); box-shadow: 0 8px 25px rgba(10,37,64,0.15); }
+        .pay-btn:hover {
+            background: #1e293b;
+            transform: scale(1.01);
+            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.18);
+        }
+        .pay-btn:active {
+            transform: scale(0.98);
+        }
 
-        /* التذييل */
+        /* التذييل (Stripe / Terms / Privacy) */
         .footer-links {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 16px;
-            font-size: 12px;
-            color: #8896ab;
-            border-top: 1px solid #eef2f6;
-            padding-top: 18px;
+            gap: 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #94a3b8;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 20px;
         }
-        .footer-links span { cursor: default; }
-        .footer-links .dot { color: #d1d9e6; }
+        .footer-links span { cursor: default; transition: 0.2s; }
+        .footer-links span:hover { color: #475569; }
+        .footer-links .dot { color: #cbd5e1; }
 
-        /* رسالة النجاح */
+        /* رسالة نجاح العملية */
         #successMessage {
             display: none;
-            margin-top: 18px;
-            padding: 16px;
+            margin-top: 22px;
+            padding: 16px 20px;
             background: #e6f7ec;
             border-radius: 16px;
             color: #0c6b3e;
@@ -232,34 +295,48 @@
             text-align: center;
             border: 1px solid #b8e6c8;
             font-size: 15px;
-            animation: fadeIn 0.4s ease;
+            animation: fadeSlide 0.4s ease;
         }
-        #successMessage.show { display: block; }
+        #successMessage.show {
+            display: block;
+        }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         /* إخلاء المسؤولية الأثري */
         .disclaimer-archaeology {
-            margin-top: 20px;
-            padding: 10px 14px;
+            margin-top: 22px;
+            padding: 12px 16px;
             background: #fef2f2;
             border-radius: 12px;
             border: 1px solid #fecaca;
             color: #991b1b;
-            font-size: 10px;
+            font-size: 11px;
             text-align: center;
             line-height: 1.6;
+            font-weight: 500;
         }
 
-        @media (max-width: 480px) { .container { padding: 20px; } .card-icons { font-size: 12px; padding: 4px 10px; } }
+        /* تحسينات للشاشات الصغيرة */
+        @media (max-width: 480px) {
+            .container { padding: 28px 18px; }
+            .card-logos img { height: 18px; }
+            .card-row input { font-size: 16px; letter-spacing: 1.5px; }
+            .pay-btn { font-size: 16px; padding: 18px; }
+            .card-logos { padding: 4px 10px; }
+        }
     </style>
 </head>
 <body>
+
     <div class="container">
         <!-- البريد الإلكتروني -->
         <div class="email-section">
             <label>Email</label>
-            <input type="email" id="email" placeholder="you@example.com" value="gohsheiih@gmail.com">
+            <input type="email" id="email" placeholder="you@example.com" value="gohsheilh@gmail.com">
         </div>
 
         <!-- عنوان الدفع -->
@@ -269,10 +346,15 @@
         <!-- بطاقة المعلومات -->
         <div class="card-header">Card information</div>
 
+        <!-- حقل البطاقة مع شعارات VISA و MasterCard (روابط صور حقيقية) -->
         <div class="card-row">
             <input type="text" id="cardNumber" placeholder="1234 1234 1234 1234" value="1234 1234 1234 1234">
-            <div class="card-icons">
-                <span class="visa">VISA</span>
+            <div class="card-logos">
+                <!-- شعار VISA (رابط صورة SVG عالي الجودة) -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="VISA" loading="lazy">
+                <span class="logo-divider"></span>
+                <!-- شعار MasterCard (رابط صورة SVG عالي الجودة) -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/2560px-Mastercard-logo.svg.png" alt="MasterCard" loading="lazy">
             </div>
         </div>
 
@@ -284,7 +366,7 @@
             </div>
             <div class="field-group">
                 <label>CVC</label>
-                <input type="text" id="cvc" placeholder="•••" maxlength="4" value="123">
+                <input type="password" id="cvc" placeholder="•••" maxlength="4" value="123">
             </div>
         </div>
 
@@ -294,7 +376,7 @@
             <input type="text" id="cardHolder" placeholder="Full name on card" value="John Doe">
         </div>
 
-        <!-- اختيار الدولة -->
+        <!-- قائمة الدول (جميع دول العالم) -->
         <div class="country-select">
             <label>Country or region</label>
             <select id="country">
@@ -564,5 +646,6 @@
             });
         })();
     </script>
+
 </body>
 </html>
